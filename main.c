@@ -44,7 +44,6 @@ char *string_append(char string[50], char append[50])
 
 char *string_replace(int start, int end, char string[40], char new_text[40])
 {
-
     // replace the text between i and j to the new text where i and j are included
     int difference = end - start - 1;
     int new_str_length = string_length(new_text);
