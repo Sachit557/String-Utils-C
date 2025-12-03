@@ -8,24 +8,30 @@
 // substring finder
 // string insert
 
-int string_length(char string[50]);
-char *string_append(char string[50], char append[50]);
-char *string_replace(int start, int end, char string[40], char new_text[40]);
-char *substring_finder(int start, int end, char string[40]);
-char *string_insert(char string[50], char added_string[50], int index);
+int string_length(const char *string);
+char *string_append(const char *string, const char *append);
+char *string_replace(int start, int end, const char *string, const char *new_text);
+char *substring_finder(int start, int end, const char *string);
+char *string_insert(const char *string, const char *added_string, int index);
 
-int string_length(char string[50])
+int string_length(const char *string)
 {
     int a = strlen(string);
     return a;
 }
 
-char *string_append(char string[50], char append[50])
+char *string_append(const char *string, const char *append)
 {
     int string_length = strlen(string);
     int append_string_length = strlen(append);
+
     int total = string_length + append_string_length + 1;
-    char appended_string[total];
+    char *appended_string = malloc(total);
+
+    if (!appended_string)
+    {
+        return NULL;
+    }
 
     for (int i = 0; i < string_length; i++)
     {
@@ -39,10 +45,10 @@ char *string_append(char string[50], char append[50])
 
     appended_string[total - 1] = '\0';
 
-    // return the appended string
+    return appended_string;
 }
 
-char *string_replace(int start, int end, char string[40], char new_text[40])
+char *string_replace(int start, int end, const char *string, const char *new_text)
 {
     // replace the text between i and j to the new text where i and j are included
     int difference = end - start - 1;
@@ -72,7 +78,7 @@ char *string_replace(int start, int end, char string[40], char new_text[40])
     // return the updated string
 }
 
-char *substring_finder(int starting, int ending, char string[40])
+char *substring_finder(int starting, int ending, const char *string)
 {
     char substring[40];
     int difference = ending - starting + 1;
@@ -86,6 +92,6 @@ char *substring_finder(int starting, int ending, char string[40])
     // return substring
 }
 
-char *string_insert(char string[50], char added_string[50], int index)
+char *string_insert(const char *string, const char *added_string, int index)
 {
 }
