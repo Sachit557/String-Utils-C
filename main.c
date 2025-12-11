@@ -51,8 +51,11 @@ char *string_append(const char *string, const char *append)
 char *string_replace(int start, int end, const char *string, const char *new_text)
 {
     // replace the text between i and j to the new text where i and j are included
-    int difference = end - start - 1;
+
     int new_str_length = string_length(new_text);
+    int original_string_length = string_length(string);
+    int difference = end - start - 1;
+
     char updated_string[40];
     int k = 0;
 
