@@ -14,5 +14,9 @@ char *string_copy(const char *string); // returns the copy of the string
 char *string_trim(const char *string); // removes the spaces from starting and the end
 char **string_split(const char *string, char delim, int *count);
 void string_free(char *string); // frees the memory allocated to the pointer
+int string_starts_with(const char *s, const char *prefix);
+int string_ends_with(const char *s, const char *suffix);
+char *string_to_lower(const char *s);
+char *string_to_upper(const char *s);
 
 #endif

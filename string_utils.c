@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 size_t string_length(const char *string); // Returns length of null-terminated string (excludes '\0')
 int string_find(const char *string, const char *pattern);
@@ -12,7 +13,11 @@ char *string_insert(const char *string, const char *added_string, int index);
 char *string_copy(const char *string); // Returns a dynamically allocated copy of the string, caller must free
 char *string_trim(const char *string); // Returns new string with leading/trailing spaces removed, caller must free
 char **string_split(const char *string, char delim, int *count);
-void string_free(char *string); // Frees memory allocated for a string, safe if NULL
+void string_free(char *string);                                 // Frees memory allocated for a string, safe if NULL
+int string_starts_with(const char *string, const char *prefix); // returns 1 if the string starts with the prefix otherwise returns 0
+int string_ends_with(const char *string, const char *suffix);   // returns 1 if the string ends with the suffix otherwise returns 0
+char *string_to_lower(const char *string);
+char *string_to_upper(const char *string);
 
 size_t string_length(const char *string)
 {
@@ -266,16 +271,116 @@ int string_find(const char *string, const char *pattern) // work on it
     }
 }
 
+int string_starts_with(const char *string, const char *prefix)
+{
+    if (string == NULL || prefix == NULL)
+        return -1;
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_length(prefix);
+    int startswithprefix = 1;
+
+    if (string_l2 > string_l1)
+        return -1;
+
+    for (size_t i = 0; i < string_l2; i++)
+    {
+        if (string[i] != prefix[i])
+        {
+            startswithprefix = 0;
+            break;
+        }
+    }
+
+    return startswithprefix;
+}
+
+int string_ends_with(const char *string, const char *suffix)
+{
+    if (string == NULL || suffix == NULL)
+        return -1;
+
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_length(suffix);
+    int endswithsuffix = 1;
+
+    if (string_l2 > string_l1)
+        return -1;
+
+    for (size_t i = 0; i < string_l2 - 1; i++)
+    {
+        if (string[string_l1 - string_l2 + i] != suffix[i])
+        {
+            endswithsuffix = 0;
+            break;
+        }
+    }
+
+    return endswithsuffix;
+}
+
+char *string_to_lower(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+    char *result = malloc((string_l1 + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (int i = 0; i < string_l1; i++)
+    {
+        if (isalnum(string[i]) == 1)
+        {
+            result[i] = tolower(string[i]);
+        }
+
+        else
+            result[i] = string[i];
+    }
+
+    result[string_l1] = '\0';
+    return result;
+}
+
+char *string_to_upper(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+    char *result = malloc((string_l1 + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (int i = 0; i < string_l1; i++)
+    {
+        if (isalnum(string[i]) == 1)
+        {
+            result[i] = toupper(string[i]);
+        }
+
+        else
+            result[i] = string[i];
+    }
+
+    result[string_l1] = '\0';
+    return result;
+}
+
 int main()
 {
-    char s1[] = "Hello   WOOOORD        s";
+    char s1[] = "Helloo   WOOOORD        s";
     char s2[] = "Hello";
+    char *s3 = "aaaa df df df Hello";
     int a = string_find(s1, s2);
-    char *s = string_trim(s1);
+    char *s = string_to_lower(s1);
     int b = string_equals("World", s2);
-    int c = string_length(s2);
+    int c = string_ends_with(s3, s2);
 
-    printf("%d", c);
+    printf("%s", s);
 
     return 0;
 }
@@ -286,5 +391,8 @@ int  string_ends_with(const char *s, const char *suffix);
 char *string_to_lower(const char *s);
 char *string_to_upper(const char *s);
 
-
+fix functions
+fix formatting issues with comments
+remove print statements
+add readme.md
 */
