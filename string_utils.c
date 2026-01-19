@@ -225,9 +225,19 @@ void string_free(char *string)
 
 int string_equals(const char *string1, const char *string2)
 {
-    int string_l1 = string_length(string1);
-    int string_l2 = string_length(string2);
-    int isequal = 1;
+    size_t string_l1 = string_length(string1);
+    size_t string_l2 = string_length(string2);
+
+    if (string_l1 != string_l2)
+        return 0;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (string1[i] != string2[i])
+            return 0;
+    }
+
+    return 1;
 }
 
 int main()
@@ -236,8 +246,9 @@ int main()
     char s2[] = "World";
     int a = string_length(s1);
     char *s = string_trim(s1);
+    int b = string_equals("World", s2);
 
-    printf("%s", s);
+    printf("%d", b);
 
     return 0;
 }
