@@ -2,13 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// string replace
-// string length
-// string append
-// substring finder
-// string insert
-
-int string_length(const char *string);
+size_t string_length(const char *string);
 int string_find(const char *string, const char *pattern);
 int string_equals(const char *string1, const char *string2);
 char *string_append(const char *string, const char *append);
@@ -20,10 +14,11 @@ char *string_trim(const char *string);
 char **string_split(const char *string, char delim, int *count);
 void string_free(char *string);
 
-int string_length(const char *string)
+size_t string_length(const char *string)
 {
-    int a = strlen(string);
-    return a;
+    if (string == NULL)
+        return 0;
+    return strlen(string);
 }
 
 char *string_append(const char *string, const char *append)
