@@ -2,17 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 
-size_t string_length(const char *string); // returns length of a string
+size_t string_length(const char *string); // Returns length of null-terminated string (excludes '\0')
 int string_find(const char *string, const char *pattern);
-int string_equals(const char *string1, const char *string2); // returns 1 if the 2 strings are equal otherwise returns 0
-char *string_append(const char *string, const char *append); // returns a string of the appended length on the string
+int string_equals(const char *string1, const char *string2); // Returns 1 if strings are equal, otherwise returns 0
+char *string_append(const char *string, const char *append); // Returns new string with appended string, caller must free
 char *string_replace(int start, int end, const char *string, const char *new_text);
-char *substring_finder(int start, int end, const char *string); // returns the substring between 2 indexes
+char *substring_finder(int start, int end, const char *string); // Returns new substring from start to end, caller must free
 char *string_insert(const char *string, const char *added_string, int index);
-char *string_copy(const char *string); // returns the copy of the string
-char *string_trim(const char *string); // removes the spaces from starting and the end
+char *string_copy(const char *string); // Returns a dynamically allocated copy of the string, caller must free
+char *string_trim(const char *string); // Returns new string with leading/trailing spaces removed, caller must free
 char **string_split(const char *string, char delim, int *count);
-void string_free(char *string); // frees the memory allocated to the pointer
+void string_free(char *string); // Frees memory allocated for a string, safe if NULL
 
 size_t string_length(const char *string)
 {
