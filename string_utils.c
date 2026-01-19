@@ -168,8 +168,13 @@ char *string_copy(const char *string)
 {
     size_t string_l1 = string_length(string);
     char *result = malloc((string_l1 + 1) * sizeof(char));
+    if (result == NULL)
+    {
+        printf("Memory not allocated\n");
+        return NULL;
+    }
 
-    for (int i = 0; i < string_l1; i++)
+    for (size_t i = 0; i < string_l1; i++)
         result[i] = string[i];
     result[string_l1] = '\0';
 
@@ -179,9 +184,13 @@ char *string_copy(const char *string)
 char *string_trim(const char *string)
 {
     size_t k = 0;
-    size_t string_l1 = string_length(string);
     int startindex = 0;
     int endindex = 0;
+
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
 
     for (size_t i = 0; i < string_l1; i++)
     {
@@ -192,7 +201,7 @@ char *string_trim(const char *string)
         }
     }
 
-    for (size_t i = string_l1 - 1; i >= 0; i--)
+    for (int i = string_l1 - 1; i >= 0; i--)
     {
         if (string[i] != ' ')
         {
@@ -202,6 +211,12 @@ char *string_trim(const char *string)
     }
 
     char *result = malloc(endindex - startindex + 2);
+
+    if (result == NULL)
+    {
+        printf("Memory not allocated\n");
+        return NULL;
+    }
 
     for (size_t i = startindex; i < endindex + 1; i++)
     {
@@ -215,11 +230,15 @@ char *string_trim(const char *string)
 
 void string_free(char *string)
 {
-    free(string);
+    if (string != NULL)
+        free(string);
 }
 
 int string_equals(const char *string1, const char *string2)
 {
+    if (string1 == NULL || string2 == NULL)
+        return 0;
+
     size_t string_l1 = string_length(string1);
     size_t string_l2 = string_length(string2);
 
@@ -237,6 +256,7 @@ int string_equals(const char *string1, const char *string2)
 
 int string_find(const char *string, const char *pattern) // work on it
 {
+
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(pattern);
 
@@ -253,8 +273,9 @@ int main()
     int a = string_find(s1, s2);
     char *s = string_trim(s1);
     int b = string_equals("World", s2);
+    int c = string_length(s2);
 
-    printf("%d", a);
+    printf("%d", c);
 
     return 0;
 }
