@@ -240,6 +240,17 @@ int string_equals(const char *string1, const char *string2)
     return 1;
 }
 
+int string_find(const char *string, const char *pattern)
+{
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_length(pattern);
+
+    if (string_l2 > string_l1)
+    {
+        return -1;
+    }
+}
+
 int main()
 {
     char s1[] = "Hello   WOOOORD        s";
