@@ -10,7 +10,7 @@
 
 int string_length(const char *string);
 int string_find(const char *string, const char *pattern);
-int string_equals(const char *a, const char *b);
+int string_equals(const char *string1, const char *string2);
 char *string_append(const char *string, const char *append);
 char *string_replace(int start, int end, const char *string, const char *new_text);
 char *substring_finder(int start, int end, const char *string);
@@ -171,16 +171,71 @@ char *string_insert(const char *string, const char *added_string, int index) // 
 
 char *string_copy(const char *string)
 {
-    int string_l1 = string_length(string);
-    char *result = malloc(string_l1 * sizeof(char));
+    size_t string_l1 = string_length(string);
+    char *result = malloc((string_l1 + 1) * sizeof(char));
+
+    for (int i = 0; i < string_l1; i++)
+        result[i] = string[i];
+    result[string_l1] = '\0';
+
+    return result;
+}
+
+char *string_trim(const char *string)
+{
+    size_t k = 0;
+    size_t string_l1 = string_length(string);
+    int startindex = 0;
+    int endindex = 0;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (string[i] != ' ')
+        {
+            startindex = i;
+            break;
+        }
+    }
+
+    for (size_t i = string_l1 - 1; i >= 0; i--)
+    {
+        if (string[i] != ' ')
+        {
+            endindex = i;
+            break;
+        }
+    }
+
+    char *result = malloc(endindex - startindex + 2);
+
+    for (size_t i = startindex; i < endindex + 1; i++)
+    {
+        result[k] = string[i];
+        k++;
+    }
+
+    result[endindex - startindex + 1] = '\0';
+    return result;
+}
+
+void string_free(char *string)
+{
+    free(string);
+}
+
+int string_equals(const char *string1, const char *string2)
+{
+    int string_l1 = string_length(string1);
+    int string_l2 = string_length(string2);
+    int isequal = 1;
 }
 
 int main()
 {
-    char s1[] = "Hello";
+    char s1[] = "Hello   WOOOORD        s";
     char s2[] = "World";
     int a = string_length(s1);
-    char *s = substring_finder(0, 4, s1);
+    char *s = string_trim(s1);
 
     printf("%s", s);
 
