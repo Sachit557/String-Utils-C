@@ -1,3 +1,3 @@
-array functions implemented in c 
+string functions implemented in c
 
 Massive work in progress
