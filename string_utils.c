@@ -240,7 +240,7 @@ int string_equals(const char *string1, const char *string2)
     return 1;
 }
 
-int string_find(const char *string, const char *pattern)
+int string_find(const char *string, const char *pattern) // work on it
 {
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(pattern);
@@ -254,12 +254,12 @@ int string_find(const char *string, const char *pattern)
 int main()
 {
     char s1[] = "Hello   WOOOORD        s";
-    char s2[] = "World";
-    int a = string_length(s1);
+    char s2[] = "Hello";
+    int a = string_find(s1, s2);
     char *s = string_trim(s1);
     int b = string_equals("World", s2);
 
-    printf("%d", b);
+    printf("%d", a);
 
     return 0;
 }
