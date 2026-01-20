@@ -47,8 +47,9 @@ int string_is_alnum(const char *string);   // returns 1 if the string is alphanu
 int string_index_valid(const char *string, int index);
 int string_range_valid(const char *string, int start, int end);
 char *string_repeat(const char *string, int times);
-char *string_pad_left(const char *string, int width, char pad);
-char *string_pad_right(const char *string, int width, char pad);
+char *string_pad_left(const char *string, int width, char pad);  // Pads a string to a given width by adding the specified character to the left.
+char *string_pad_right(const char *string, int width, char pad); // Pads a string to a given width by adding the specified character to the right.
+
 size_t string_length(const char *string)
 {
     if (string == NULL)
@@ -532,13 +533,82 @@ int string_is_alnum(const char *string)
 
 char *string_pad_left(const char *string, int width, char pad)
 {
-    char *result = malloc((width + 1) * sizeof(char));
-    if (result == NULL)
-        return NULL;
+
     size_t string_l1 = string_length(string);
+
+    if (width <= string_l1)
+    {
+        char *result = malloc((string_l1 + 1) * sizeof(char));
+        if (result == NULL)
+            return NULL;
+        for (size_t i = 0; i < string_l1; i++)
+        {
+            result[i] = string[i];
+        }
+
+        result[string_l1] = '\0';
+        return result;
+    }
+
+    else
+    {
+        char *result = malloc((width + 1) * sizeof(char));
+        if (result == NULL)
+            return NULL;
+
+        for (size_t i = 0; i < width - string_l1; i++)
+        {
+            result[i] = pad;
+        }
+
+        for (size_t i = 0; i < string_l1; i++)
+        {
+            result[width - string_l1 + i] = string[i];
+        }
+
+        result[width] = '\0';
+        return result;
+    }
 }
 
-char *string_pad_right(const char *string, int width, char pad);
+char *string_pad_right(const char *string, int width, char pad)
+{
+    size_t string_l1 = string_length(string);
+
+    if (width <= string_l1)
+    {
+        char *result = malloc((string_l1 + 1) * sizeof(char));
+        if (result == NULL)
+            return NULL;
+        for (size_t i = 0; i < string_l1; i++)
+        {
+            result[i] = string[i];
+        }
+
+        result[string_l1] = '\0';
+        return result;
+    }
+
+    else
+    {
+        char *result = malloc((width + 1) * sizeof(char));
+        if (result == NULL)
+            return NULL;
+
+        for (size_t i = 0; i < string_l1; i++)
+        {
+            result[i] = string[i];
+        }
+
+        for (size_t i = 0; i < width - string_l1; i++)
+        {
+            result[string_l1 + i] = pad;
+        }
+
+        result[width] = '\0';
+        return result;
+    }
+}
 
 int main()
 {
@@ -550,7 +620,7 @@ int main()
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
     char *d = string_sort(s1);
-
+    printf("%s", string_pad_right("42", 5, '0'));
     printf("%s", d);
 
     return 0;
