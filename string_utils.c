@@ -42,8 +42,8 @@ char *string_replace_first(const char *string, const char *old, const char *new)
 char *string_replace_all(const char *string, const char *old, const char *new);
 int string_is_empty(const char *string);   // returns 1 if the string is empty and returns 0 otherwise
 int string_is_numeric(const char *string); // returns 1 if the string is numeric
-int string_is_alpha(const char *string);
-int string_is_alnum(const char *string);
+int string_is_alpha(const char *string);   // returns 1 if the string is alphabetical
+int string_is_alnum(const char *string);   // returns 1 if the string is alphanumeric
 int string_index_valid(const char *string, int index);
 int string_range_valid(const char *string, int start, int end);
 char *string_repeat(const char *string, int times);
@@ -471,7 +471,7 @@ int string_is_empty(const char *string)
 
 int string_is_numeric(const char *string)
 {
-    if (string == NULL || string[0] == "\0")
+    if (string == NULL || string[0] == '\0')
         return 0;
 
     size_t string_l1 = string_length(string);
@@ -488,6 +488,57 @@ int string_is_numeric(const char *string)
 
     return isnumeric;
 }
+
+int string_is_alpha(const char *string)
+{
+    if (string == NULL || string[0] == '\0')
+        return 0;
+
+    size_t string_l1 = string_length(string);
+    int isalphabet = 1;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (isalpha(string[i]) == 0)
+        {
+            isalphabet = 0;
+            break;
+        }
+    }
+
+    return isalphabet;
+}
+
+int string_is_alnum(const char *string)
+{
+
+    if (string == NULL || string[0] == '\0')
+        return 0;
+
+    size_t string_l1 = string_length(string);
+    int isalphanum = 1;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (isalnum(string[i]) == 0)
+        {
+            isalphanum = 0;
+            break;
+        }
+    }
+
+    return isalphanum;
+}
+
+char *string_pad_left(const char *string, int width, char pad)
+{
+    char *result = malloc((width + 1) * sizeof(char));
+    if (result == NULL)
+        return NULL;
+    size_t string_l1 = string_length(string);
+}
+
+char *string_pad_right(const char *string, int width, char pad);
 
 int main()
 {
