@@ -41,9 +41,9 @@ char *string_join(char **strings, int count, const char *separator);
 char *string_replace_first(const char *string, const char *old, const char *new);
 char *string_replace_all(const char *string, const char *old, const char *new);
 int string_is_empty(const char *string);   // returns 1 if the string is empty and returns 0 otherwise
-int string_is_numeric(const char *string); // returns 1 if the string is numeric
-int string_is_alpha(const char *string);   // returns 1 if the string is alphabetical
-int string_is_alnum(const char *string);   // returns 1 if the string is alphanumeric
+int string_is_numeric(const char *string); // returns 1 if the string is numeric and returns 0 otherwise
+int string_is_alpha(const char *string);   // returns 1 if the string is alphabetical and returns 0 otherwise
+int string_is_alnum(const char *string);   // returns 1 if the string is alphanumeric and returns 0 otherwise
 int string_index_valid(const char *string, int index);
 int string_range_valid(const char *string, int start, int end);
 char *string_repeat(const char *string, int times);
