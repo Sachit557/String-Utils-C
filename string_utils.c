@@ -230,7 +230,7 @@ char *string_trim(const char *string)
 
     for (size_t i = 0; i < string_l1; i++)
     {
-        if (string[i] != ' ')
+        if (!isspace(string[i]))
         {
             startindex = i;
             break;
@@ -239,7 +239,7 @@ char *string_trim(const char *string)
 
     for (int i = string_l1 - 1; i >= 0; i--)
     {
-        if (string[i] != ' ')
+        if (!isspace(string[i]))
         {
             endindex = i;
             break;
@@ -610,19 +610,70 @@ char *string_pad_right(const char *string, int width, char pad)
     }
 }
 
+char *string_ltrim(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    int startindex = 0;
+
+    size_t string_l1 = string_length(string);
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (!isspace(string[i]))
+        {
+            startindex = i;
+            break;
+        }
+    }
+
+    size_t trimmed_str_lenth = string_l1 - startindex;
+    char *result = malloc((trimmed_str_lenth + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (int i = 0; i < trimmed_str_lenth; i++)
+        result[i] = string[i + startindex];
+
+    result[trimmed_str_lenth] = '\0';
+    return result;
+}
+
+char *string_rtrim(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    int endindex = 0;
+
+    int string_l1 = string_length(string);
+
+    for (int i = string_l1 - 1; i >= 0; i--)
+    {
+        if (!isspace(string[i]))
+        {
+            endindex = i;
+            break;
+        }
+    }
+
+    int trimmed_str_lenth = string_l1 - endindex;
+}
+
 int main()
 {
     char s1[] = "Helloo   WOOOORD        s";
     char s2[] = "Hello";
+    char *s4 = "          H e l    l   o";
     char *s3 = "aaaa df df df Hello";
     int a = string_find(s1, s2);
     char *s = string_to_lower(s1);
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
-    char *d = string_sort(s1);
-    printf("%s", string_pad_right("42", 5, '0'));
+    char *d = string_ltrim(s4);
     printf("%s", d);
-
     return 0;
 }
 
