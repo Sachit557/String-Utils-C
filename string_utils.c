@@ -66,10 +66,7 @@ char *string_append(const char *string, const char *append)
     char *result = malloc(result_size * sizeof(char));
 
     if (result == NULL)
-    {
-        printf("Memory not allocated\n");
         return NULL;
-    }
 
     for (size_t i = 0; i < string_l1; i++)
         result[i] = string[i];
@@ -85,16 +82,10 @@ char *string_append(const char *string, const char *append)
 char *string_replace(int start, int end, const char *string, const char *new_text) // complete this
 {
     if (start < 0 || end < 0)
-    {
-        printf("Indexes must be greater than 0\n");
         return NULL;
-    }
 
     if (end <= start)
-    {
-        printf("second index should be higher than the first one\n");
         return NULL;
-    }
 
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(new_text);
@@ -125,33 +116,21 @@ char *substring_finder(int start, int end, const char *string)
 {
     size_t index = 0;
     if (start < 0 || end < 0)
-    {
-        printf("Indexes must be greater than 0\n");
         return NULL;
-    }
 
     if (end < start)
-    {
-        printf("second index should be higher than the first one\n");
         return NULL;
-    }
 
     size_t string_l1 = string_length(string);
 
     if (string_l1 - 1 < end)
-    {
-        printf("second index cant be greater than the length of the string\n");
         return NULL;
-    }
 
     size_t substring_length = end - start + 2;
     char *result = malloc(substring_length * sizeof(char));
 
     if (result == NULL)
-    {
-        printf("Memory not allocated\n");
         return NULL;
-    }
 
     for (size_t i = start; i < end + 1; i++)
     {
@@ -166,10 +145,7 @@ char *substring_finder(int start, int end, const char *string)
 char *string_insert(const char *string, const char *added_string, int index) // complete this
 {
     if (index < 0)
-    {
-        printf("index cannot be less than 0\n");
         return NULL;
-    }
 
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(added_string);
@@ -205,10 +181,7 @@ char *string_copy(const char *string)
     size_t string_l1 = string_length(string);
     char *result = malloc((string_l1 + 1) * sizeof(char));
     if (result == NULL)
-    {
-        printf("Memory not allocated\n");
         return NULL;
-    }
 
     for (size_t i = 0; i < string_l1; i++)
         result[i] = string[i];
@@ -249,10 +222,7 @@ char *string_trim(const char *string)
     char *result = malloc(endindex - startindex + 2);
 
     if (result == NULL)
-    {
-        printf("Memory not allocated\n");
         return NULL;
-    }
 
     for (size_t i = startindex; i < endindex + 1; i++)
     {
@@ -648,7 +618,7 @@ char *string_rtrim(const char *string)
 
     int endindex = 0;
 
-    int string_l1 = string_length(string);
+    int string_l1 = (int)string_length(string);
 
     for (int i = string_l1 - 1; i >= 0; i--)
     {
@@ -659,20 +629,30 @@ char *string_rtrim(const char *string)
         }
     }
 
-    int trimmed_str_lenth = string_l1 - endindex;
+    int trimmed_str_lenth = endindex + 1;
+    char *result = malloc((trimmed_str_lenth + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (int i = 0; i < endindex + 1; i++)
+        result[i] = string[i];
+
+    result[trimmed_str_lenth] = '\0';
+    return result;
 }
 
 int main()
 {
     char s1[] = "Helloo   WOOOORD        s";
     char s2[] = "Hello";
-    char *s4 = "          H e l    l   o";
+    char *s4 = "          H e l    l   o     a                a";
     char *s3 = "aaaa df df df Hello";
     int a = string_find(s1, s2);
     char *s = string_to_lower(s1);
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
-    char *d = string_ltrim(s4);
+    char *d = string_rtrim(s4);
     printf("%s", d);
     return 0;
 }
