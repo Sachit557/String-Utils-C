@@ -3,22 +3,52 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-size_t string_length(const char *string); // Returns length of null-terminated string (excludes '\0')
-int string_find(const char *string, const char *pattern);
+// Fundamental functions
+size_t string_length(const char *string);                    // Returns length of null-terminated string (excludes '\0')
+char *string_copy(const char *string);                       // Returns a dynamically allocated copy of the string, caller must free
+void string_free(char *string);                              // Frees memory allocated for a string, safe if NULL
 int string_equals(const char *string1, const char *string2); // Returns 1 if strings are equal, otherwise returns 0
-char *string_append(const char *string, const char *append); // Returns new string with appended string, caller must free
-char *string_replace(int start, int end, const char *string, const char *new_text);
-char *substring_finder(int start, int end, const char *string); // Returns new substring from start to end, caller must free
-char *string_insert(const char *string, const char *added_string, int index);
-char *string_copy(const char *string); // Returns a dynamically allocated copy of the string, caller must free
-char *string_trim(const char *string); // Returns new string with leading/trailing spaces removed, caller must free
-char **string_split(const char *string, char delim, int *count);
-void string_free(char *string);                                 // Frees memory allocated for a string, safe if NULL
+
+// Search and comparision
+int string_find(const char *string, const char *pattern);
 int string_starts_with(const char *string, const char *prefix); // returns 1 if the string starts with the prefix otherwise returns 0
 int string_ends_with(const char *string, const char *suffix);   // returns 1 if the string ends with the suffix otherwise returns 0
+
+// Substrings and slicing
+char *substring_finder(int start, int end, const char *string); // Returns new substring from start to end, caller must free
+char *string_replace(int start, int end, const char *string, const char *new_text);
+char *string_insert(const char *string, const char *added_string, int index);
+
+// String modification and construction
+char *string_append(const char *string, const char *append); // Returns new string with appended string, caller must free
+char *string_trim(const char *string);                       // Returns new string with leading/trailing spaces removed, caller must free
+
+// Case Conversion
 char *string_to_lower(const char *string);
 char *string_to_upper(const char *string);
 
+// Tokenization
+char **string_split(const char *string, char delim, int *count);
+
+char *string_reverse(const char *string); // Returns new reversed string  , caller must free
+char *string_sort(const char *string);    // returns new sorted string , caller must free
+
+int string_compare(const char *a, const char *b);
+int string_find_char(const char *string, char c);
+char *string_ltrim(const char *string);
+char *string_rtrim(const char *string);
+char *string_join(char **strings, int count, const char *separator);
+char *string_replace_first(const char *string, const char *old, const char *new);
+char *string_replace_all(const char *string, const char *old, const char *new);
+int string_is_empty(const char *string);   // returns 1 if the string is empty and returns 0 otherwise
+int string_is_numeric(const char *string); // returns 1 if the string is numeric
+int string_is_alpha(const char *string);
+int string_is_alnum(const char *string);
+int string_index_valid(const char *string, int index);
+int string_range_valid(const char *string, int start, int end);
+char *string_repeat(const char *string, int times);
+char *string_pad_left(const char *string, int width, char pad);
+char *string_pad_right(const char *string, int width, char pad);
 size_t string_length(const char *string)
 {
     if (string == NULL)
@@ -259,7 +289,7 @@ int string_equals(const char *string1, const char *string2)
     return 1;
 }
 
-int string_find(const char *string, const char *pattern) // work on it
+int string_find(const char *string, const char *pattern) // complete this
 {
 
     size_t string_l1 = string_length(string);
@@ -370,6 +400,95 @@ char *string_to_upper(const char *string)
     return result;
 }
 
+char *string_reverse(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+
+    char *result = malloc((string_l1 + 1) * sizeof(char));
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        result[i] = string[string_l1 - 1 - i];
+    }
+    result[string_l1] = '\0';
+    return result;
+}
+
+char *string_sort(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+
+    char *result = malloc((string_l1 + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    if (string_l1 < 2)
+    {
+        if (string_l1 == 1)
+            result[0] = string[0];
+
+        result[string_l1] = '\0';
+        return result;
+    }
+
+    for (size_t i = 0; i < string_l1; i++)
+        result[i] = string[i];
+
+    for (size_t i = 0; i < string_l1 - 1; i++)
+    {
+        for (size_t j = 0; j < string_l1 - i - 1; j++)
+        {
+            if (result[j] > result[j + 1])
+            {
+                char temp = result[j];
+                result[j] = result[j + 1];
+                result[j + 1] = temp;
+            }
+        }
+    }
+
+    result[string_l1] = '\0';
+    return result;
+}
+
+int string_is_empty(const char *string)
+{
+    if (string == NULL || string[0] == '\0')
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int string_is_numeric(const char *string)
+{
+    if (string == NULL || string[0] == "\0")
+        return 0;
+
+    size_t string_l1 = string_length(string);
+    int isnumeric = 1;
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (isdigit(string[i]) == 0)
+        {
+            isnumeric = 0;
+            break;
+        }
+    }
+
+    return isnumeric;
+}
+
 int main()
 {
     char s1[] = "Helloo   WOOOORD        s";
@@ -379,8 +498,9 @@ int main()
     char *s = string_to_lower(s1);
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
+    char *d = string_sort(s1);
 
-    printf("%s", s);
+    printf("%s", d);
 
     return 0;
 }
