@@ -642,6 +642,62 @@ char *string_rtrim(const char *string)
     return result;
 }
 
+char **string_split(const char *string, char delim, int *count)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+
+    int startindex = 0;
+    int endindex = 0;
+
+    for (int i = 0; i < string_l1; i++)
+    {
+        if (string[i] != delim)
+        {
+            startindex = i;
+            break;
+        }
+    }
+
+    for (int i = string_l1 - 1; i >= 0; i--)
+    {
+        if (string[i] != delim)
+        {
+            endindex = i;
+            break;
+        }
+    }
+
+    int counter = 0;
+    for (int i = startindex; i <= endindex; i++)
+    {
+        if (string[i] == delim)
+        {
+            while (string[i] == delim)
+                i++;
+            counter++;
+        }
+    }
+
+    *count = counter + 1;
+
+    char **result = malloc((*count + 1) * sizeof(char *)); // last one for null terminator
+
+    if (result == NULL)
+        return NULL;
+
+    result[*count] = '\0'; // null terminated
+    int k = 0;
+
+    //
+    // write logic for allocatin tokens and then adding them to **result
+    //
+
+    printf("start index is %d and end index is %d\n", startindex, endindex);
+}
+
 int main()
 {
     char s1[] = "Helloo   WOOOORD        s";
@@ -653,7 +709,10 @@ int main()
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
     char *d = string_rtrim(s4);
-    printf("%s", d);
+    int count = 0;
+    char **e = string_split(s3, ' ', &count);
+    printf("the count is %d", count);
+
     return 0;
 }
 
