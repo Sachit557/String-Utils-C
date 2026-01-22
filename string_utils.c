@@ -935,6 +935,9 @@ char *string_pop_front(const char *string)
 
 char *string_remove_char(const char *string, char c)
 {
+    if (string == NULL)
+        return NULL;
+
     size_t string_l1 = string_length(string);
     size_t count = 0;
     size_t k = 0;
@@ -947,6 +950,9 @@ char *string_remove_char(const char *string, char c)
 
     char *result = malloc((size + 1) * sizeof(char));
 
+    if (result == NULL)
+        return NULL;
+
     for (size_t i = 0; i < string_l1; i++)
     {
         if (string[i] != c)
@@ -957,7 +963,7 @@ char *string_remove_char(const char *string, char c)
     return result;
 }
 
-char *string_remove_first(const char *string, const char *pattern) // complete this
+char *string_remove_first(const char *string, const char *pattern)
 {
     if (string == NULL || pattern == NULL)
         return NULL;
@@ -991,13 +997,49 @@ char *string_remove_first(const char *string, const char *pattern) // complete t
     return result;
 }
 
+char *string_remove_all(const char *string, const char *pattern)
+{
+    if (string == NULL || pattern == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_length(pattern);
+    size_t last_index = string_l1 - string_l2;
+
+    size_t k = 0;
+    size_t size = 0;
+
+    if (string_l2 > string_l1)
+        return NULL;
+
+    int *indexes = NULL;
+    int *result = NULL;
+
+    while (1)
+    {
+        for (size_t i = 0; i < string_l1; i++)
+        {
+            if (string[i] != pattern[0])
+                continue;
+
+            else
+            {
+                size_t index = i;
+                for (size_t j = i; j < string_l1; j++)
+                {
+                }
+            }
+        }
+    }
+}
+
 int main()
 {
-    char s1[] = "Helloo   HWOHOOORD    HH    dds";
+    char s1[] = "Helloo   Hello Hello hi hi hi Hello";
     char s2[] = "Hello ";
     char *s4 = "          H e l    l   o     a                a";
     char *s3 = "aaaa df df df Hello";
-    char *s = string_remove_first(s1, "Hello");
+    char *s = string_remove_all(s1, "Hello");
 
     printf("%s", s);
 
