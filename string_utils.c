@@ -1006,36 +1006,74 @@ char *string_remove_all(const char *string, const char *pattern)
     size_t string_l2 = string_length(pattern);
     size_t last_index = string_l1 - string_l2;
 
-    size_t k = 0;
+    size_t indexing_size = 0;
     size_t size = 0;
+    size_t c = 0;
+    size_t k = 0;
 
     if (string_l2 > string_l1)
         return NULL;
 
-    int *indexes = NULL;
-    int *result = NULL;
+    size_t *indexes = NULL;
+    char *result = NULL;
 
-    while (1)
+    for (size_t i = 0; i <= last_index; i++)
     {
-        for (size_t i = 0; i < string_l1; i++)
-        {
-            if (string[i] != pattern[0])
-                continue;
 
-            else
+        if (string[i] != pattern[0])
+            continue;
+
+        else
+        {
+
+            size_t count = 0;
+            size_t index = i;
+
+            for (size_t j = i; j < i + string_l2; j++)
             {
-                size_t index = i;
-                for (size_t j = i; j < string_l1; j++)
+                if (string[j] == pattern[k++])
+                    count++;
+            }
+
+            if (count == string_l2)
+            {
+
+                size_t *ptr = realloc(indexes, (indexing_size + 1) * sizeof(size_t));
+
+                if (ptr == 0)
                 {
+                    free(indexes);
+                    return NULL;
                 }
+
+                indexes = ptr;
+                indexes[indexing_size] = index;
+                indexing_size++;
             }
         }
     }
+
+    size = string_l1 - (indexing_size)*string_l2;
+    char *ptr = realloc(result, (size + 1) * sizeof(char));
+
+    if (ptr == NULL)
+    {
+        free(result);
+        return NULL;
+    }
+
+    result = ptr;
+
+    // finish this function
+    // result is NULL atm
+
+    result[size] = '\0';
+    return result;
 }
 
 int main()
 {
-    char s1[] = "Helloo   Hello Hello hi hi hi Hello";
+    char s1[] = "Hello o   Hello Hello hi hi hi Hello";
     char s2[] = "Hello ";
     char *s4 = "          H e l    l   o     a                a";
     char *s3 = "aaaa df df df Hello";
