@@ -51,10 +51,10 @@ char *string_pad_left(const char *string, int width, char pad);    // Pads a str
 char *string_pad_right(const char *string, int width, char pad);   // Pads a string to a given width by adding the specified character to the right.
 char *string_remove_range(const char *string, int start, int end); // Returns a new string with the range removed from the string . caller must free
 
-char *string_pop_back(const char *string);
-char *string_pop_front(const char *string);
-char *string_remove_char(const char *string, char c);
-char *string_remove_first(const char *string, const char *pattern);
+char *string_pop_back(const char *string);                          // returns a new string with last character removed . caller must free
+char *string_pop_front(const char *string);                         // returns a new string with first character removed . caller must free
+char *string_remove_char(const char *string, char c);               // returns a new string with all occurrence of the particular character removed
+char *string_remove_first(const char *string, const char *pattern); // returns a new string with first occurence of the substring removed
 char *string_remove_all(const char *string, const char *pattern);
 
 size_t string_length(const char *string)
@@ -261,7 +261,7 @@ int string_equals(const char *string1, const char *string2)
     return 1;
 }
 
-int string_find(const char *string, const char *pattern) // complete this
+int string_find(const char *string, const char *pattern)
 {
 
     if (string == NULL || pattern == NULL)
@@ -872,13 +872,132 @@ char *string_remove_range(const char *string, int start, int end)
     return result;
 }
 
+char *string_pop_back(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+
+    if (string_l1 == 1 || string_l1 == 0)
+    {
+        char *result = malloc(1 * sizeof(char));
+
+        if (result == NULL)
+            return NULL;
+
+        result[0] = '\0';
+        return result;
+    }
+
+    char *result = malloc(string_l1 * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < string_l1 - 1; i++)
+        result[i] = string[i];
+
+    result[string_l1 - 1] = '\0';
+    return result;
+}
+
+char *string_pop_front(const char *string)
+{
+    if (string == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+    size_t k = 0;
+
+    if (string_l1 == 1 || string_l1 == 0)
+    {
+        char *result = malloc(1 * sizeof(char));
+
+        if (result == NULL)
+            return NULL;
+
+        result[0] = '\0';
+        return result;
+    }
+
+    char *result = malloc(string_l1 * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 1; i < string_l1 - 1; i++)
+        result[k++] = string[i];
+
+    result[string_l1 - 1] = '\0';
+    return result;
+}
+
+char *string_remove_char(const char *string, char c)
+{
+    size_t string_l1 = string_length(string);
+    size_t count = 0;
+    size_t k = 0;
+
+    for (size_t i = 0; i < string_l1; i++)
+        if (string[i] == c)
+            count++;
+
+    size_t size = string_l1 - count;
+
+    char *result = malloc((size + 1) * sizeof(char));
+
+    for (size_t i = 0; i < string_l1; i++)
+    {
+        if (string[i] != c)
+            result[k++] = string[i];
+    }
+
+    result[size] = '\0';
+    return result;
+}
+
+char *string_remove_first(const char *string, const char *pattern) // complete this
+{
+    if (string == NULL || pattern == NULL)
+        return NULL;
+
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_length(pattern);
+    size_t string_l3 = string_l1 - string_l2;
+    size_t k = 0;
+
+    if (string_l2 > string_l1)
+        return NULL;
+
+    size_t startindex = string_find(string, pattern);
+    if (startindex == -1)
+        return NULL;
+
+    size_t endindex = startindex + string_l2 - 1;
+
+    char *result = malloc((string_l3 + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < startindex; i++)
+        result[k++] = string[i];
+
+    for (size_t i = endindex + 1; i < string_l1; i++)
+        result[k++] = string[i];
+
+    result[string_l3] = '\0';
+    return result;
+}
+
 int main()
 {
-    char s1[] = "Helloo   WOOOORD        s";
+    char s1[] = "Helloo   HWOHOOORD    HH    dds";
     char s2[] = "Hello ";
     char *s4 = "          H e l    l   o     a                a";
     char *s3 = "aaaa df df df Hello";
-    char *s = string_remove_range(s1, 1, 5);
+    char *s = string_remove_first(s1, "Hello");
 
     printf("%s", s);
 
