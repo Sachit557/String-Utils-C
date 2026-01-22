@@ -24,8 +24,8 @@ char *string_append(const char *string, const char *append); // Returns new stri
 char *string_trim(const char *string);                       // Returns new string with leading/trailing spaces removed, caller must free
 
 // Case Conversion
-char *string_to_lower(const char *string);
-char *string_to_upper(const char *string);
+char *string_to_lower(const char *string); // returns a new string with all characters in lowercase
+char *string_to_upper(const char *string); // returns a new string with all characters un uppercase
 
 // Tokenization
 char **string_split(const char *string, char delim, int *count);
@@ -35,18 +35,18 @@ char *string_sort(const char *string);    // returns new sorted string , caller 
 
 int string_compare(const char *a, const char *b);
 int string_find_char(const char *string, char c);
-char *string_ltrim(const char *string);
-char *string_rtrim(const char *string);
+char *string_ltrim(const char *string); // Returns a newly allocated string with all leading whitespace removed from the input string
+char *string_rtrim(const char *string); // Returns a newly allocated string with all trailing whitespace removed from the input string
 char *string_join(char **strings, int count, const char *separator);
 char *string_replace_first(const char *string, const char *old, const char *new);
 char *string_replace_all(const char *string, const char *old, const char *new);
-int string_is_empty(const char *string);   // returns 1 if the string is empty and returns 0 otherwise
-int string_is_numeric(const char *string); // returns 1 if the string is numeric and returns 0 otherwise
-int string_is_alpha(const char *string);   // returns 1 if the string is alphabetical and returns 0 otherwise
-int string_is_alnum(const char *string);   // returns 1 if the string is alphanumeric and returns 0 otherwise
-int string_index_valid(const char *string, int index);
-int string_range_valid(const char *string, int start, int end);
-char *string_repeat(const char *string, int times);
+int string_is_empty(const char *string);                         // returns 1 if the string is empty and returns 0 otherwise
+int string_is_numeric(const char *string);                       // returns 1 if the string is numeric and returns 0 otherwise
+int string_is_alpha(const char *string);                         // returns 1 if the string is alphabetical and returns 0 otherwise
+int string_is_alnum(const char *string);                         // returns 1 if the string is alphanumeric and returns 0 otherwise
+int string_index_valid(const char *string, int index);           // Returns 1 if index is within valid bounds of the string, otherwise returns 0
+int string_range_valid(const char *string, int start, int end);  // Returns 1 if the range [start, end) is valid within the string, otherwise returns 0
+char *string_repeat(const char *string, int times);              // Returns a newly allocated string formed by repeating the input string 'times' times
 char *string_pad_left(const char *string, int width, char pad);  // Pads a string to a given width by adding the specified character to the left.
 char *string_pad_right(const char *string, int width, char pad); // Pads a string to a given width by adding the specified character to the right.
 
@@ -332,9 +332,9 @@ char *string_to_lower(const char *string)
 
     for (int i = 0; i < string_l1; i++)
     {
-        if (isalnum(string[i]) == 1)
+        if (isalnum((unsigned char)string[i]))
         {
-            result[i] = tolower(string[i]);
+            result[i] = tolower((unsigned char)string[i]);
         }
 
         else
@@ -358,9 +358,9 @@ char *string_to_upper(const char *string)
 
     for (int i = 0; i < string_l1; i++)
     {
-        if (isalnum(string[i]) == 1)
+        if (isalnum((unsigned char)string[i]))
         {
-            result[i] = toupper(string[i]);
+            result[i] = toupper((unsigned char)string[i]);
         }
 
         else
@@ -642,7 +642,7 @@ char *string_rtrim(const char *string)
     return result;
 }
 
-char **string_split(const char *string, char delim, int *count)
+char **string_split(const char *string, char delim, int *count) // complete this
 {
     if (string == NULL)
         return NULL;
@@ -694,14 +694,81 @@ char **string_split(const char *string, char delim, int *count)
     //
     // write logic for allocatin tokens and then adding them to **result
     //
+    int i = startindex;
 
-    printf("start index is %d and end index is %d\n", startindex, endindex);
+    while (i <= endindex)
+    {
+        if (string[i] != delim)
+        {
+        }
+
+        else
+            i++;
+    }
+
+    return result;
+}
+
+char *string_repeat(const char *string, int times)
+{
+    if (string == NULL)
+        return NULL;
+
+    if (times < 0)
+        return NULL;
+
+    if (times == 0)
+    {
+        char *result = malloc(1 * sizeof(char));
+        if (result == NULL)
+            return NULL;
+        result[0] = '\0';
+        return result;
+    }
+
+    size_t string_l1 = string_length(string);
+    size_t string_l2 = string_l1 * times;
+    size_t k = 0;
+
+    char *result = malloc((string_l2 + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < times; i++)
+    {
+        for (size_t j = 0; j < string_l1; j++)
+        {
+            result[k] = string[j];
+            k++;
+        }
+    }
+
+    result[string_l2] = '\0';
+    return result;
+}
+
+int string_index_valid(const char *string, int index)
+{
+
+    if (string == NULL || index < 0)
+        return 0;
+
+    return index < (int)string_length(string);
+}
+
+int string_range_valid(const char *string, int start, int end)
+{
+    if (string == NULL || start < 0 || end < 0 || start < end)
+        return 0;
+
+    return end <= (int)string_length(string);
 }
 
 int main()
 {
     char s1[] = "Helloo   WOOOORD        s";
-    char s2[] = "Hello";
+    char s2[] = "Hello ";
     char *s4 = "          H e l    l   o     a                a";
     char *s3 = "aaaa df df df Hello";
     int a = string_find(s1, s2);
@@ -709,9 +776,8 @@ int main()
     int b = string_equals("World", s2);
     int c = string_ends_with(s3, s2);
     char *d = string_rtrim(s4);
-    int count = 0;
-    char **e = string_split(s3, ' ', &count);
-    printf("the count is %d", count);
+    char *e = string_repeat(s2, 10);
+    printf("%s", e);
 
     return 0;
 }
