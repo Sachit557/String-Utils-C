@@ -53,7 +53,9 @@ gcc main.c string_utils.c -o my_program
 #include "string_utils.h"
 #include <stdio.h>
 
-    int main() {
+int main()
+{
+
     char \*original = " Hello World ";
 
     char *trimmed = string_trim(original);
