@@ -127,6 +127,13 @@ Please follow consistent naming (string\_\*) and document each function clearly.
 
 ---
 
+## Design Philosophy
+
+This library is **hand-written and intentionally designed**, not auto-generated or "vibe-coded".  
+Each function is implemented with explicit control over memory, clarity of behavior, and predictable performance.
+
+---
+
 ## Acknowledgements
 
 Inspired by Python string handling and modern C memory safety practices.
