@@ -50,8 +50,8 @@ gcc main.c string_utils.c -o my_program
 ## Usage
 
 ```
-    #include "string_utils.h"
-    #include <stdio.h>
+#include "string_utils.h"
+#include <stdio.h>
 
     int main() {
     char \*original = " Hello World ";
