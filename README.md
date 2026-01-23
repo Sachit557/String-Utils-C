@@ -49,6 +49,7 @@ gcc main.c string_utils.c -o my_program
 
 ## Usage
 
+```
     #include "string_utils.h"
     #include <stdio.h>
 
@@ -79,6 +80,7 @@ gcc main.c string_utils.c -o my_program
     return 0;
 
 }
+```
 
 ---
 
