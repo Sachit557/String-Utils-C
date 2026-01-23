@@ -32,9 +32,9 @@ Inspired by higher-level languages like Python, this library gives you **dynamic
 
 ## Installation
 
-Clone the repository and include the library in your project:
+**Clone the repository and include the library in your project:**
 
-git clone https://github.com/<your-username>/c-string-library.git
+**git clone:** https://github.com/Sachit557/String-Utils-C.git
 cd c-string-library
 
 Include the header in your C source file:
