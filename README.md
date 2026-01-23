@@ -39,11 +39,15 @@ cd c-string-library
 
 Include the header in your C source file:
 
+```c
 #include "string_utils.h"
+```
 
 Compile with your source:
 
+```
 gcc main.c string_utils.c -o my_program
+```
 
 ---
 
