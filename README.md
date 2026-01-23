@@ -49,14 +49,12 @@ gcc main.c string_utils.c -o my_program
 
 ## Usage
 
-```
+```c
 #include "string_utils.h"
 #include <stdio.h>
 
-int main()
-{
-
-    char \*original = " Hello World ";
+int main() {
+    char *original = "  Hello World  ";
 
     char *trimmed = string_trim(original);
     printf("Trimmed: '%s'\n", trimmed);
@@ -80,22 +78,22 @@ int main()
     string_free(removed);
 
     return 0;
-
 }
+
 ```
 
 ---
 
 ## Memory Management
 
-All functions that **allocate new memory** return a pointer that **must be freed** using string_free to avoid memory leaks.  
+All functions that **allocate new memory** return a pointer that **must be freed** using **string_free** to avoid memory leaks.  
 Functions that only **read or validate** strings do not allocate memory.
 
 ---
 
 ## Contributing
 
-Contributions, bug fixes, and improvements are welcome!
+**Contributions, bug fixes, and improvements are welcome!**
 
 Steps:
 
