@@ -30,8 +30,6 @@ Inspired by higher-level languages like Python, this library gives you **dynamic
 
 ---
 
----
-
 ## Installation
 
 Clone the repository and include the library in your project:
