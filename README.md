@@ -5,6 +5,15 @@ Inspired by higher-level languages like Python, this library gives you **dynamic
 
 ---
 
+## Compatibility
+
+This library is **fully compatible with C++** when used with **C-style strings (`char*`)**.  
+All identifiers avoid C++ reserved keywords, and the API is safe to include in `.cpp` files.
+
+> Note: This is a C library — no STL, no `std::string`, no C++ abstractions.
+
+---
+
 ## Features
 
 - **Fundamental operations**

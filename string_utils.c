@@ -59,8 +59,8 @@ char *string_remove_first(const char *string, const char *pattern); // returns a
 char *string_remove_all(const char *string, const char *pattern);   // returns a new string with all occurences of a substring removed . caller must free
 
 // Replacement and joining functions
-char *string_replace_first(const char *string, const char *old, const char *new); // Returns a new string with the first occurrence of a particular string replaced with a different string . caller must free
-char *string_replace_all(const char *string, const char *old, const char *new);
+char *string_replace_first(const char *string, const char *old, const char *new_text); // Returns a new string with the first occurrence of a particular string replaced with a different string . caller must free
+char *string_replace_all(const char *string, const char *old, const char *new_text);
 char *string_join(char **strings, int count, const char *separator);
 
 // Tokenization function
@@ -811,14 +811,14 @@ int string_range_valid(const char *string, int start, int end)
     return end <= (int)string_length(string);
 }
 
-char *string_replace_first(const char *string, const char *old, const char *new)
+char *string_replace_first(const char *string, const char *old, const char *new_text)
 {
-    if (string == NULL || old == NULL || new == NULL)
+    if (string == NULL || old == NULL || new_text == NULL)
         return NULL;
 
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(old);
-    size_t string_l3 = string_length(new);
+    size_t string_l3 = string_length(new_text);
     size_t j = 0;
 
     int index = string_find(string, old);
@@ -833,7 +833,7 @@ char *string_replace_first(const char *string, const char *old, const char *new)
         result[i] = string[i];
 
     for (size_t i = index; i < index + string_l3; i++)
-        result[i] = new[j++];
+        result[i] = new_text[j++];
 
     for (size_t i = index + string_l2; i < string_l1; i++)
         result[string_l3 + i - string_l2] = string[i];
@@ -842,11 +842,11 @@ char *string_replace_first(const char *string, const char *old, const char *new)
     return result;
 }
 
-char *string_replace_all(const char *string, const char *old, const char *new) // complete this
+char *string_replace_all(const char *string, const char *old, const char *new_text) // complete this
 {
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(old);
-    size_t string_l3 = string_length(new);
+    size_t string_l3 = string_length(new_text);
 }
 
 char *string_remove_range(const char *string, int start, int end)
