@@ -1,3 +1,101 @@
-string functions implemented in c
+# C String Utility Library
 
-Massive work in progress
+A lightweight, **C string manipulation library** providing a comprehensive set of functions for handling strings safely and efficiently.  
+Inspired by higher-level languages like Python, this library gives you **dynamic allocation, string slicing, searching, trimming, and more** — all in pure C.
+
+---
+
+## Features
+
+- **Fundamental operations**
+  - `string_length`, `string_duplicate`, `string_equals`, `string_compare`, `string_free`
+- **Validation helpers**
+  - `string_index_valid`, `string_range_valid`, `string_is_numeric`, `string_is_alpha`, `string_is_alnum`, `string_is_empty`
+- **Searching & lookup**
+  - `string_find`, `string_find_char`, `string_contains`, `string_count`, `string_count_char`, `string_starts_with`, `string_ends_with`
+- **Substring & slicing**
+  - `string_substring`, `string_substring_range`
+- **Case conversion & transformations**
+  - `string_to_lower`, `string_to_upper`, `string_reverse`, `string_sort`
+- **Trims & whitespace**
+  - `string_ltrim`, `string_rtrim`, `string_trim`
+- **Construction & modification**
+  - `string_append`, `string_insert`, `string_replace`, `string_repeat`, `string_pad_left`, `string_pad_right`
+- **Removal operations**
+  - `string_pop_back`, `string_pop_front`, `string_remove_char`, `string_remove_range`, `string_remove_first`, `string_remove_all`
+- **Replacement & joining**
+  - `string_replace_first`, `string_replace_all`, `string_join`
+- **Tokenization**
+  - `string_split`
+
+---
+
+## Installation
+
+Clone the repository and include the library in your project:
+
+```bash
+git clone https://github.com/<your-username>/c-string-library.git
+cd c-string-library
+
+Include the header in your C source file:
+#include "string_utils.h"
+Compile with your source
+gcc main.c string_utils.c -o my_program
+
+Usage
+#include "string_utils.h"
+#include <stdio.h>
+
+int main() {
+    char *original = "  Hello World  ";
+
+    char *trimmed = string_trim(original);
+    printf("Trimmed: '%s'\n", trimmed);
+
+    char *upper = string_to_upper(trimmed);
+    printf("Uppercase: '%s'\n", upper);
+
+    char *reversed = string_reverse(upper);
+    printf("Reversed: '%s'\n", reversed);
+
+    string_free(trimmed);
+    string_free(upper);
+    string_free(reversed);
+
+    return 0;
+}
+
+Memory Management
+
+All functions that allocate new memory return a pointer that must be freed using string_free to avoid memory leaks.
+Functions that only read or validate strings do not allocate memory.
+
+Contributing
+
+Contributions, bug fixes, and improvements are welcome!
+
+Steps:
+
+Fork the repository
+
+Make changes in a branch
+
+Submit a pull request
+
+Please follow consistent naming (string_*) and document each function clearly.
+
+TODO / Known Issues
+
+string_replace is partially implemented
+
+string_split is currently incomplete
+
+string_replace_all needs final implementation
+
+Some functions may have edge cases with empty strings or NULL pointers — check documentation before use
+
+Acknowledgements
+
+Inspired by Python string handling and modern C memory safety practices.
+```
