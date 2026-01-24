@@ -59,8 +59,8 @@ char *string_remove_first(const char *string, const char *pattern); // returns a
 char *string_remove_all(const char *string, const char *pattern);   // returns a new string with all occurences of a substring removed . caller must free
 
 // Replacement and joining functions
-char *string_replace_first(const char *string, const char *old, const char *new_text); // Returns a new string with the first occurrence of a particular string replaced with a different string . caller must free
-char *string_replace_all(const char *string, const char *old, const char *new_text);
+char *string_replace_first(const char *string, const char *old, const char *new_text); // Returns a new string with the first occurrence of a particular substring replaced with the new string . caller must free
+char *string_replace_all(const char *string, const char *old, const char *new_text);   // Returns a new string with all occurences of a particular substring replaced with the new string . caller must free
 char *string_join(char **strings, int count, const char *separator);
 
 // Tokenization function
@@ -842,11 +842,91 @@ char *string_replace_first(const char *string, const char *old, const char *new_
     return result;
 }
 
-char *string_replace_all(const char *string, const char *old, const char *new_text) // complete this
+char *string_replace_all(const char *string, const char *old, const char *new_text)
 {
+    if (string == NULL || old == NULL || new_text == NULL)
+        return NULL;
+
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(old);
     size_t string_l3 = string_length(new_text);
+    size_t number_of_words = string_count(string, old);
+    size_t lastindex = string_l1 - string_l2;
+    size_t index = 0;
+    size_t result_index = 0;
+
+    if (number_of_words == 0)
+    {
+        char *result = malloc(string_l1 + 1);
+
+        if (result == NULL)
+            return NULL;
+
+        for (size_t i = 0; i < string_l1; i++)
+            result[i] = string[i];
+
+        result[string_l1] = '\0';
+        return result;
+    }
+
+    size_t return_size = string_l1 + number_of_words * (string_l3 - string_l2);
+    char *result = malloc((return_size + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i <= lastindex; i++)
+    {
+        if (string[i] != old[0])
+        {
+            result[result_index++] = string[i];
+            continue;
+        }
+
+        else
+        {
+            index = i;
+            size_t count = 0;
+            size_t k = 0;
+            for (size_t j = i; j < i + string_l2; j++)
+            {
+                if (string[j] == old[k++])
+                    count++;
+                else
+                    break;
+            }
+
+            if (count == string_l2)
+            {
+                for (size_t m = 0; m < string_l3; m++)
+                    result[result_index++] = new_text[m];
+                i = i + string_l2 - 1;
+            }
+
+            else
+            {
+                result[result_index++] = string[i];
+                continue;
+            }
+        }
+    }
+
+    for (size_t i = lastindex + 1; i < string_l1; i++)
+        result[result_index++] = string[i];
+
+    result[result_index++] = '\0';
+
+    char *ptr = realloc(result, result_index + 1);
+
+    if (ptr == NULL)
+    {
+        free(result);
+        return NULL;
+    }
+
+    result = ptr;
+
+    return result;
 }
 
 char *string_remove_range(const char *string, int start, int end)
