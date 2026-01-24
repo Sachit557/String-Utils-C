@@ -43,12 +43,12 @@ char *string_rtrim(const char *string); // Returns a newly allocated string with
 char *string_trim(const char *string);  // Returns new string with leading/trailing spaces removed, caller must free
 
 // Construction functions
-char *string_append(const char *string, const char *append);                  // Returns new string with appended string, caller must free
-char *string_insert(const char *string, const char *added_string, int index); // Returns a new string with the added string inserted at the index , caller calls free
-char *string_replace(int start, int end, const char *string, const char *new_text);
-char *string_repeat(const char *string, int times);              // Returns a newly allocated string formed by repeating the input string 'times' times . caller must free
-char *string_pad_left(const char *string, int width, char pad);  // Pads a string to a given width by adding the specified character to the left. caller must free
-char *string_pad_right(const char *string, int width, char pad); // Pads a string to a given width by adding the specified character to the right. caller must free
+char *string_append(const char *string, const char *append);                        // Returns new string with appended string, caller must free
+char *string_insert(const char *string, const char *added_string, int index);       // Returns a new string with the added string inserted at the index , caller calls free
+char *string_replace(int start, int end, const char *string, const char *new_text); // Returns a new string with the substring within start and end replaced by new_text , caller calls free
+char *string_repeat(const char *string, int times);                                 // Returns a newly allocated string formed by repeating the input string 'times' times . caller must free
+char *string_pad_left(const char *string, int width, char pad);                     // Pads a string to a given width by adding the specified character to the left. caller must free
+char *string_pad_right(const char *string, int width, char pad);                    // Pads a string to a given width by adding the specified character to the right. caller must free
 
 // Removal operation functions
 char *string_pop_back(const char *string);                          // returns a new string with last character removed . caller must free
@@ -105,26 +105,61 @@ char *string_replace(int start, int end, const char *string, const char *new_tex
 
     size_t string_l1 = string_length(string);
     size_t string_l2 = string_length(new_text);
+    size_t k = 0;
+
+    if (start > string_l1 - 1)
+        return NULL;
 
     if (string_l1 - 1 >= end)
     {
-        char *result = NULL;
+        char *result = malloc(string_l1 + string_l2 + 1); // allocate here
 
         for (int i = 0; i < start; i++)
         {
-            result[i] = string[i];
+            result[k++] = string[i];
         }
 
         for (int i = 0; i < string_l2; i++)
         {
-            result[start + i] = new_text[i];
+            result[k++] = new_text[i];
         }
+
+        for (int i = end + 1; i < string_l1; i++)
+        {
+            result[k++] = string[i];
+        }
+
+        result[k] = '\0';
+
+        char *ptr = realloc(result, k + 1);
+
+        if (ptr == NULL)
+        {
+            free(result);
+            return NULL;
+        }
+
+        result = ptr;
+        return result;
     }
 
     else if (string_l1 - 1 < end)
     {
-        // if start index is within the length of the string then append that if not then skip
-        // append the new text that had to be replaced
+        char *result = malloc(start + string_l2 + 1);
+        if (result == NULL)
+            return NULL;
+
+        size_t k = 0;
+
+        for (size_t i = 0; i < start; i++)
+            result[k++] = string[i];
+
+        for (size_t i = 0; i < string_l2; i++)
+            result[k++] = new_text[i];
+
+        result[k] = '\0';
+
+        return result;
     }
 }
 
