@@ -27,8 +27,8 @@ int string_count_char(const char *string, char c);              // returns the n
 int string_starts_with(const char *string, const char *prefix); // returns 1 if the string starts with the prefix otherwise returns 0
 int string_ends_with(const char *string, const char *suffix);   // returns 1 if the string ends with the suffix otherwise returns 0
 
-// substring and slicing functions (use allocation)
-char *string_substring(const char *string, int start, int length);    // returns a substring starting from index to the length . caller must free
+// substring and slicing functions
+char *string_substring(const char *string, int start, int length);    // returns a substring starting from index to the length , caller must free
 char *string_substring_range(int start, int end, const char *string); // Returns new substring from start to end, caller must free
 
 // Case conversion and simple transforms functions
@@ -46,25 +46,25 @@ char *string_trim(const char *string);  // Returns new string with leading/trail
 char *string_append(const char *string, const char *append);                        // Returns new string with appended string, caller must free
 char *string_insert(const char *string, const char *added_string, int index);       // Returns a new string with the added string inserted at the index , caller calls free
 char *string_replace(int start, int end, const char *string, const char *new_text); // Returns a new string with the substring within start and end replaced by new_text , caller calls free
-char *string_repeat(const char *string, int times);                                 // Returns a newly allocated string formed by repeating the input string 'times' times . caller must free
-char *string_pad_left(const char *string, int width, char pad);                     // Pads a string to a given width by adding the specified character to the left. caller must free
-char *string_pad_right(const char *string, int width, char pad);                    // Pads a string to a given width by adding the specified character to the right. caller must free
+char *string_repeat(const char *string, int times);                                 // Returns a newly allocated string formed by repeating the input string 'times' times , caller must free
+char *string_pad_left(const char *string, int width, char pad);                     // Pads a string to a given width by adding the specified character to the left, caller must free
+char *string_pad_right(const char *string, int width, char pad);                    // Pads a string to a given width by adding the specified character to the right, caller must free
 
 // Removal operation functions
-char *string_pop_back(const char *string);                          // returns a new string with last character removed . caller must free
-char *string_pop_front(const char *string);                         // returns a new string with first character removed . caller must free
-char *string_remove_char(const char *string, char c);               // returns a new string with all occurrence of the particular character removed . caller must free
-char *string_remove_range(const char *string, int start, int end);  // Returns a new string with the range removed from the string . caller must free
-char *string_remove_first(const char *string, const char *pattern); // returns a new string with first occurence of the substring removed . caller must free
-char *string_remove_all(const char *string, const char *pattern);   // returns a new string with all occurences of a substring removed . caller must free
+char *string_pop_back(const char *string);                          // returns a new string with last character removed , caller must free
+char *string_pop_front(const char *string);                         // returns a new string with first character removed , caller must free
+char *string_remove_char(const char *string, char c);               // returns a new string with all occurrence of the particular character removed , caller must free
+char *string_remove_range(const char *string, int start, int end);  // Returns a new string with the range removed from the string , caller must free
+char *string_remove_first(const char *string, const char *pattern); // returns a new string with first occurence of the substring removed , caller must free
+char *string_remove_all(const char *string, const char *pattern);   // returns a new string with all occurences of a substring removed , caller must free
 
 // Replacement and joining functions
-char *string_replace_first(const char *string, const char *old, const char *new_text); // Returns a new string with the first occurrence of a particular substring replaced with the new string . caller must free
-char *string_replace_all(const char *string, const char *old, const char *new_text);   // Returns a new string with all occurences of a particular substring replaced with the new string . caller must free
-char *string_join(char **strings, int count, const char *separator);
+char *string_replace_first(const char *string, const char *old, const char *new_text); // Returns a new string with the first occurrence of a particular substring replaced with the new string , caller must free
+char *string_replace_all(const char *string, const char *old, const char *new_text);   // Returns a new string with all occurences of a particular substring replaced with the new string , caller must free
+char *string_join(char **strings, int count, const char *separator);                   // Returns a new string with all the strings joined together with the seperator , caller must free
 
 // Tokenization function
-char **string_split(const char *string, char delim, int *count);
+char **string_split(const char *string, char delim, int *count); // Returns a new 2nd array ( string) with the substrings seperated by delim tokenized and *count contains the number of substrings , caller must free
 
 size_t string_length(const char *string)
 {
@@ -95,7 +95,7 @@ char *string_append(const char *string, const char *append)
     return result;
 }
 
-char *string_replace(int start, int end, const char *string, const char *new_text) // complete this
+char *string_replace(int start, int end, const char *string, const char *new_text)
 {
     if (start < 0 || end < 0)
         return NULL;
@@ -115,19 +115,13 @@ char *string_replace(int start, int end, const char *string, const char *new_tex
         char *result = malloc(string_l1 + string_l2 + 1); // allocate here
 
         for (int i = 0; i < start; i++)
-        {
             result[k++] = string[i];
-        }
 
         for (int i = 0; i < string_l2; i++)
-        {
             result[k++] = new_text[i];
-        }
 
         for (int i = end + 1; i < string_l1; i++)
-        {
             result[k++] = string[i];
-        }
 
         result[k] = '\0';
 
@@ -764,27 +758,40 @@ char **string_split(const char *string, char delim, int *count) // complete this
 
     *count = counter + 1;
 
-    char **result = malloc((*count + 1) * sizeof(char *)); // last one for null terminator
+    char **result = malloc((*count + 1) * sizeof(char *));
+    size_t token_index = 0;
 
     if (result == NULL)
         return NULL;
 
-    result[*count] = '\0'; // null terminated
-    int k = 0;
+    result[*count] = NULL;
 
-    //
-    // write logic for allocatin tokens and then adding them to **result
-    //
-    int i = startindex;
-
-    while (i <= endindex)
+    for (size_t i = startindex; i <= endindex; i++)
     {
-        if (string[i] != delim)
-        {
-        }
+        if (string[i] == delim)
+            continue;
 
         else
-            i++;
+        {
+            size_t j = i;
+            size_t size = 0;
+            size_t string_index = 0;
+            while (j <= endindex && string[j] != delim)
+            {
+                size++;
+                j++;
+            }
+            result[token_index++] = malloc(1 + size * sizeof(char));
+
+            if (result[token_index - 1] == NULL)
+                return NULL;
+
+            for (size_t k = 0; k < size; k++)
+                result[token_index - 1][k] = string[i++];
+            i--;
+
+            result[token_index - 1][size] = '\0';
+        }
     }
 
     return result;
@@ -1312,6 +1319,55 @@ int string_contains(const char *string, const char *pattern)
     return 0;
 }
 
+char *string_join(char **strings, int count, const char *separator)
+{
+    size_t size = 0;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        if (strings[i] == NULL)
+            return NULL;
+
+        size += string_length(strings[i]);
+    }
+
+    if (separator == NULL)
+        return NULL;
+
+    size_t result_index = 0;
+    char *result = malloc((size + string_length(separator) * (count - 1) + 1) * sizeof(char));
+
+    if (result == NULL)
+        return NULL;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        size_t string_l1 = string_length(strings[i]);
+        size_t string_l2 = string_length(separator);
+
+        for (size_t j = 0; j < string_l1; j++)
+            result[result_index++] = strings[i][j];
+
+        if (i < count - 1)
+        {
+            for (size_t j = 0; j < string_l2; j++)
+                result[result_index++] = separator[j];
+        }
+    }
+
+    char *ptr = realloc(result, result_index + 1);
+
+    if (ptr == NULL)
+    {
+        free(result);
+        return NULL;
+    }
+
+    result = ptr;
+    result[result_index] = '\0';
+    return result;
+}
+
 int main()
 {
     char s1[] = "Hello World Hello World Hello World Hello World ";
@@ -1324,15 +1380,3 @@ int main()
 
     return 0;
 }
-
-/*
-int  string_starts_with(const char *s, const char *prefix);
-int  string_ends_with(const char *s, const char *suffix);
-char *string_to_lower(const char *s);
-char *string_to_upper(const char *s);
-
-fix functions
-fix formatting issues with comments
-remove print statements
-add readme.md
-*/
