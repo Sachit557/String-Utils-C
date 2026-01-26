@@ -64,7 +64,7 @@ char *string_replace_all(const char *string, const char *old, const char *new_te
 char *string_join(char **strings, int count, const char *separator);                   // Returns a new string with all the strings joined together with the seperator , caller must free
 
 // Tokenization function
-char **string_split(const char *string, char delim, int *count); // Returns a new 2nd array ( string) with the substrings seperated by delim tokenized and *count contains the number of substrings , caller must free
+char **string_split(const char *string, char delim, int *count); // Returns a new 2d array ( string) with the substrings seperated by delim tokenized and *count contains the number of substrings , caller must free
 
 size_t string_length(const char *string)
 {
@@ -717,7 +717,7 @@ char *string_rtrim(const char *string)
     return result;
 }
 
-char **string_split(const char *string, char delim, int *count) // complete this
+char **string_split(const char *string, char delim, int *count)
 {
     if (string == NULL)
         return NULL;
