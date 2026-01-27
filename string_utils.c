@@ -1367,16 +1367,3 @@ char *string_join(char **strings, int count, const char *separator)
     result[result_index] = '\0';
     return result;
 }
-
-int main()
-{
-    char s1[] = "Hello World Hello World Hello World Hello World ";
-    char s2[] = "Hello ";
-    char *s4 = "          H e l    l   o     a                a";
-    char *s3 = "aaaa df df df Hello";
-    char *s = string_remove_all(s1, "Hello");
-
-    printf("%s", s);
-
-    return 0;
-}
