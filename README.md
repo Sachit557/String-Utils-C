@@ -2,6 +2,7 @@
 
 A lightweight, **C string manipulation library** providing a comprehensive set of functions for handling strings safely and efficiently.  
 Inspired by higher-level languages like Python, this library gives you **dynamic allocation, string slicing, searching, trimming, and more** — all in pure C.
+**Intended for learning, experimentation, and general-purpose use.**
 
 ---
 
@@ -101,6 +102,13 @@ int main() {
 
 All functions that **allocate new memory** return a pointer that **must be freed** using **string_free** to avoid memory leaks.  
 Functions that only **read or validate** strings do not allocate memory.
+
+---
+
+## License:
+
+This project is licensed under the MIT License. See the LICENSE
+file for details.
 
 ---
 
