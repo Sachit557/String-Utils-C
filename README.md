@@ -128,9 +128,7 @@ Please follow consistent naming (string\_\*) and document each function clearly.
 
 ## TODO / Known Issues
 
-- string_replace is partially implemented
-- string_split is currently incomplete
-- string_replace_all needs final implementation
+- string_compare is not yet implemented
 - Some functions may have edge cases with empty strings or NULL pointers — check documentation before use
 
 ---
