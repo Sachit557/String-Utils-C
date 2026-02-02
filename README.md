@@ -64,8 +64,8 @@ gcc main.c string_utils.c -o my_program
 ## Usage
 
 ```c
-#include "string_utils.h"
 #include <stdio.h>
+#include "string_utils.h"
 
 int main() {
     char *original = "  Hello World  ";
