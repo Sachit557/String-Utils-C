@@ -1367,11 +1367,3 @@ char *string_join(char **strings, int count, const char *separator)
     result[result_index] = '\0';
     return result;
 }
-
-
-int main(void) {
-
-    int a = string_count_char("Hello Hello" , 'h');
-    printf("%d" , a);
-return 0;
-}
